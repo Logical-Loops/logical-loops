@@ -12,14 +12,6 @@ const services = [
   'Other',
 ];
 
-const budgetRanges = [
-  '$25K – $50K',
-  '$50K – $150K',
-  '$150K – $500K',
-  '$500K+',
-  'Not sure yet',
-];
-
 type FormState = {
   name: string;
   company: string;
