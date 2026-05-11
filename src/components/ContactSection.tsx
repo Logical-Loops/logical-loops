@@ -1,4 +1,3 @@
-'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import Icon from '@/components/ui/AppIcon';
 
@@ -18,7 +17,6 @@ type FormState = {
   email: string;
   phone: string;
   service: string;
-  budget: string;
   message: string;
 };
 
@@ -29,7 +27,7 @@ export default function ContactSection() {
   const [visible, setVisible] = useState(false);
   const [form, setForm] = useState<FormState>({
     name: '', company: '', email: '', phone: '',
-    service: '', budget: '', message: '',
+    service: '', message: '',
   });
   const [status, setStatus] = useState<FormStatus>('idle');
   const [errors, setErrors] = useState<Partial<FormState>>({});
@@ -74,7 +72,7 @@ export default function ContactSection() {
     // Mock submit — replace with backend integration
     await new Promise(res => setTimeout(res, 1800));
     setStatus('success');
-    setForm({ name: '', company: '', email: '', phone: '', service: '', budget: '', message: '' });
+    setForm({ name: '', company: '', email: '', phone: '', service: '', message: '' });
   };
 
   const inputClass = (field: keyof FormState) =>
