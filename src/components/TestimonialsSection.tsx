@@ -1,181 +1,180 @@
-import { useEffect, useRef, useState } from 'react';
-import AppImage from '@/components/ui/AppImage';
-import Icon from '@/components/ui/AppIcon';
-
-const metrics = [
-  { value: 120, suffix: '+', label: 'Projects Shipped' },
-  { value: 85, suffix: '+', label: 'Enterprise Clients' },
-  { value: 4.9, suffix: '/10', label: 'Avg. Satisfaction', isFloat: true },
-  { value: 98, suffix: '%', label: 'On-Time Delivery' }];
-
+import React, { useEffect, useRef } from 'react';
 
 const testimonials = [
   {
-    quote: "Logical Loops didn\'t just build our platform — they redesigned how our entire engineering org thinks about product development. The NovaPay system they delivered processes $200M/month without a hiccup.",
-    name: 'Marcus Webb',
-    role: 'CTO',
-    company: 'NovaPay Financial',
-    avatar: "https://img.rocket.new/generatedImages/rocket_gen_img_182bb6c77-1767880718117.png",
-    metric: '$200M/month processed'
+    name: 'Tousif Khan',
+    role: 'CTO, Naticoco Financial',
+    initials: 'TK',
+    color: '#7a6a5a',
+    quote:
+      'Working with Logical Loops has been a game-changer for our business. They took our complex ideas and transformed them into a highly intuitive mobile app and a robust custom web application.',
+    stars: 5,
   },
   {
-    quote: "We evaluated six agencies. Logical Loops was the only team that asked the right questions before writing a single line of code. Our HealthBridge app launched 3 weeks ahead of schedule.",
-    name: 'Dr. Priya Nair',
-    role: 'Chief Digital Officer',
-    company: 'HealthBridge Systems',
-    avatar: "https://img.rocket.new/generatedImages/rocket_gen_img_100bc66a6-1772072545601.png",
-    metric: '3 weeks ahead of schedule'
+    name: 'David K',
+    role: 'Founder & Managing Director',
+    initials: 'DK',
+    color: '#5a7a6a',
+    quote:
+      'Logical Loops is the ultimate full-service partner. We approached them needing everything from a complete logo redesign and a new UI/UX interface to a fully operational website.',
+    stars: 5,
   },
   {
-    quote: "The AI forecasting system they built for LogiTrack paid for itself in the first quarter. That\'s not a marketing claim — that\'s our CFO\'s exact words in the board meeting.",
-    name: 'James Okafor',
-    role: 'VP Operations',
-    company: 'LogiTrack Supply Co.',
-    avatar: "https://img.rocket.new/generatedImages/rocket_gen_img_105ad1e1b-1772111917180.png",
-    metric: 'ROI in Q1 post-launch'
-  }];
-
-
-function CounterMetric({ value, suffix, label, isFloat, started, delay }: { value: number; suffix: string; label: string; isFloat?: boolean; started: boolean; delay: number; }) {
-  const [current, setCurrent] = useState(0.0);
-  useEffect(() => {
-    if (!started) return;
-    let startTime: number | null = null;
-    const step = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / 1800, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const val = eased * value;
-      setCurrent(isFloat ? parseFloat(val.toFixed(1)) : Math.floor(val));
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    const timer = setTimeout(() => requestAnimationFrame(step), delay);
-    return () => clearTimeout(timer);
-  }, [value, started, delay, isFloat]);
-
-  return (
-    <div className="text-center">
-      <div className="text-4xl md:text-5xl font-extrabold text-gold-gradient tabular-nums mb-2">
-        {isFloat ? current.toFixed(1) : current}{suffix}
-      </div>
-      <div className="text-xs text-muted-foreground uppercase tracking-widest font-medium">{label}</div>
-    </div>);
-
-}
+    name: 'Priya N',
+    role: 'Head of Product',
+    initials: 'PN',
+    color: '#6a5a7a',
+    quote:
+      'Innovation, excellence, and exceptional user experiences—Logical Loops truly turns complex code into business reality.',
+    stars: 5,
+  },
+  {
+    name: 'Faizullah',
+    role: 'Operations Director',
+    initials: 'FZ',
+    color: '#7a5a5a',
+    quote:
+      'True to their mantra, they bring pure innovation to the table. Their cutting-edge web development performs seamlessly across all platforms.',
+    stars: 5,
+  },
+  {
+    name: 'Marcus T',
+    role: 'CEO, Techobite',
+    initials: 'MT',
+    color: '#5a6a7a',
+    quote:
+      'LogicalLoops didn\'t just build our platform — they understood our business model and engineered for scale. We went from 0 to 40,000 users in 4 months.',
+    stars: 5,
+  },
+];
 
 export default function TestimonialsSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [countersStarted, setCountersStarted] = useState(false);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const metricsObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setCountersStarted(true);
-        });
-      },
-      { threshold: 0.3 }
-    );
-    if (sectionRef.current) metricsObserver.observe(sectionRef.current);
-
-    const cardObserver = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('scroll-reveal-visible');
-            entry.target.classList.remove('scroll-reveal-hidden');
+            entry.target
+              .querySelectorAll<HTMLElement>('.reveal-hidden')
+              .forEach((el, i) => {
+                setTimeout(() => {
+                  el.classList.remove('reveal-hidden');
+                  el.classList.add('reveal-visible');
+                }, i * 80);
+              });
+            observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.1 }
     );
-    cardRefs.current.forEach((el) => { if (el) cardObserver.observe(el); });
-
-    return () => {
-      metricsObserver.disconnect();
-      cardObserver.disconnect();
-    };
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
   }, []);
 
   return (
     <section
-      id="testimonials"
+      className="py-20 bg-white relative z-10 overflow-hidden"
       ref={sectionRef}
-      className="py-24 bg-background relative overflow-hidden"
-      aria-labelledby="testimonials-heading">
-
-      <div className="blob-gold absolute w-[700px] h-[700px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 pointer-events-none" aria-hidden="true" />
-
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <span className="text-accent text-xs font-semibold uppercase tracking-widest block mb-3">Client Results</span>
-          <h2 id="testimonials-heading" className="text-section-title font-extrabold text-foreground mb-4">
-            Proof in the{' '}
-            <span className="text-gold-gradient">Numbers</span>
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Heading — left-aligned like the image */}
+        <div className="mb-12 reveal-hidden">
+          <h2 className="text-gray-900 font-black text-4xl sm:text-5xl leading-tight">
+            Why Businesses Choose
+            <br />
+            <span className="text-gray-400 font-black">Logical Loops</span>
           </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto leading-relaxed">
-            We measure success in outcomes, not outputs. Here's what happens when enterprises work with Logical Loops.
-          </p>
         </div>
 
-        {/* Metrics Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20 p-8 rounded-2xl card-glass border border-border gold-border-glow">
-          {metrics.map((m, i) =>
-            <CounterMetric key={m.label} {...m} started={countersStarted} delay={i * 200} />
-          )}
-        </div>
-
-        {/* Testimonial Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((t, i) =>
+        {/* Horizontal scroll track */}
+        <div
+          ref={trackRef}
+          className="flex gap-5 overflow-x-auto pt-8 pb-4 snap-x snap-mandatory scrollbar-hide"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {testimonials.map((t, i) => (
             <div
               key={t.name}
-              ref={(el) => { cardRefs.current[i] = el; }}
-              className="scroll-reveal-hidden relative flex flex-col justify-between p-8 rounded-2xl card-glass border border-border card-glass-hover"
-              style={{ transitionDelay: `${i * 120}ms` }}>
-
-              {/* Quote mark */}
-              <div className="text-accent/20 text-7xl font-serif leading-none absolute top-4 right-6 pointer-events-none select-none" aria-hidden="true">"</div>
-
-              <div className="relative z-10">
-                {/* Stars */}
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, j) =>
-                    <Icon key={j} name="StarIcon" variant="solid" size={14} className="text-accent" />
-                  )}
-                </div>
-
-                <blockquote className="text-foreground/90 text-sm leading-relaxed mb-6 italic">
-                  "{t.quote}"
-                </blockquote>
-
-                {/* Outcome badge */}
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20 mb-6">
-                  <Icon name="CheckCircleIcon" size={12} className="text-accent" />
-                  <span className="text-xs font-bold text-accent">{t.metric}</span>
-                </div>
+              className="reveal-hidden relative flex-shrink-0 snap-start bg-white border border-gray-200 rounded-[2rem] p-6 pt-10 flex flex-col gap-4 hover:shadow-lg transition-shadow duration-300"
+              style={{
+                width: '320px',
+                minHeight: '280px',
+                transitionDelay: `${i * 80}ms`,
+              }}
+            >
+              {/* Dark quote icon overlapping the top boundary */}
+              <div className="absolute top-0 left-8 -translate-y-1/2 w-11 h-11 rounded-full bg-black flex items-center justify-center shadow-md">
+                <svg
+                  className="w-5 h-5 text-white"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                </svg>
               </div>
 
-              {/* Author */}
-              <div className="flex items-center gap-3 pt-4 border-t border-border">
-                <AppImage
-                  src={t.avatar}
-                  alt={`${t.name}, ${t.role} at ${t.company}`}
-                  width={44}
-                  height={44}
-                  className="w-11 h-11 rounded-full object-cover border-2 border-accent/30" />
-
+              {/* Avatar + Name + Role */}
+              <div className="flex items-center gap-3">
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0 border border-gray-100"
+                  style={{ background: t.color }}
+                >
+                  {t.initials}
+                </div>
                 <div>
-                  <p className="text-sm font-bold text-foreground">{t.name}</p>
-                  <p className="text-xs text-muted-foreground">{t.role}, {t.company}</p>
+                  <p className="text-gray-900 font-bold text-xs leading-tight uppercase tracking-wider">
+                    {t.name}
+                  </p>
+                  <p className="text-gray-400 text-[10px] leading-tight mt-0.5">{t.role}</p>
                 </div>
               </div>
+
+              {/* Stars */}
+              <div className="flex gap-1">
+                {Array.from({ length: 5 }).map((_, si) => (
+                  <svg
+                    key={si}
+                    className={`w-3.5 h-3.5 ${si < t.stars ? 'text-[#ff7a59]' : 'text-gray-200'}`}
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" />
+                  </svg>
+                ))}
+              </div>
+
+              {/* Quote */}
+              <p className="text-gray-500 text-xs leading-relaxed flex-1">{t.quote}</p>
             </div>
-          )}
+          ))}
+        </div>
+
+        {/* Scroll hint dots */}
+        <div className="flex justify-center gap-2 mt-6">
+          {testimonials.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                const track = trackRef.current;
+                if (!track) return;
+                const cardWidth = 320 + 20; // card (320px) + gap (20px)
+                track.scrollTo({ left: i * cardWidth, behavior: 'smooth' });
+              }}
+              className="w-1.5 h-1.5 rounded-full bg-gray-300 hover:bg-gray-500 transition-colors"
+              aria-label={`Go to testimonial ${i + 1}`}
+            />
+          ))}
         </div>
       </div>
-    </section>);
 
+      {/* Hide scrollbar globally for this section */}
+      <style>{`
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+      `}</style>
+    </section>
+  );
 }

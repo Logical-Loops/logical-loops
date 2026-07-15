@@ -1,22 +1,28 @@
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import HeroSection from '@/components/HeroSection';
-import ServicesSection from '@/components/ServicesSection';
-import PortfolioSection from '@/components/PortfolioSection';
-import TestimonialsSection from '@/components/TestimonialsSection';
-import ContactSection from '@/components/ContactSection';
-import './index.css';
+import Navbar from './components/Navbar'
+import HeroSection from './components/HeroSection'
+import PartnersSection from './components/PartnersSection'
+import AboutSection from './components/AboutSection'
+import ServicesSection from './components/ServicesSection'
+import StatsSection from './components/StatsSection'
+import TestimonialsSection from './components/TestimonialsSection'
+import ContactSection from './components/ContactSection'
+import Footer from './components/Footer'
+import './index.css'
 
-export default function App() {
+function App() {
   return (
-    <main className="bg-background text-foreground overflow-x-hidden">
-      <Header />
+    <div className="min-h-screen bg-white">
+      <Navbar />
       <HeroSection />
+      <PartnersSection />
+      <AboutSection />
       <ServicesSection />
-      <PortfolioSection />
+      <StatsSection />
       <TestimonialsSection />
       <ContactSection />
       <Footer />
-    </main>
-  );
+    </div>
+  )
 }
+
+export default App

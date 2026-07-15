@@ -1,73 +1,37 @@
-import React, { useState, useCallback, memo } from 'react';
-import noImageFallback from '@/assets/images/no_image.png';
+import React from 'react';
 
 interface AppImageProps {
-    src: string;
-    alt: string;
-    width?: number;
-    height?: number;
-    className?: string;
-    priority?: boolean;
-    quality?: number;
-    placeholder?: 'blur' | 'empty';
-    blurDataURL?: string;
-    fill?: boolean;
-    sizes?: string;
-    onClick?: () => void;
-    fallbackSrc?: string;
-    loading?: 'lazy' | 'eager';
-    unoptimized?: boolean;
-    [key: string]: any;
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  fill?: boolean;
+  sizes?: string;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
-const AppImage = memo(function AppImage({
-    src,
-    alt,
-    width,
-    height,
-    className = '',
-    priority = false,
-    quality = 85,
-    placeholder = 'empty',
-    blurDataURL,
-    fill = false,
-    sizes,
-    onClick,
-    fallbackSrc = noImageFallback,
-    loading = 'lazy',
-    unoptimized = false,
-    ...props
-}: AppImageProps) {
-    const [imageSrc, setImageSrc] = useState(src);
-
-    const handleError = useCallback(() => {
-        setImageSrc(fallbackSrc);
-    }, [fallbackSrc]);
-
-    const handleLoad = useCallback(() => {
-        // Handle load completion
-    }, []);
-
-    const imgStyle: React.CSSProperties = {
-        width: fill ? '100%' : width,
-        height: fill ? '100%' : height,
-        objectFit: 'cover',
-        ...(fill && { position: 'absolute', inset: 0 }),
-    };
-
+export default function AppImage({ src, alt, width, height, fill, className = '', style }: AppImageProps) {
+  if (fill) {
     return (
-        <img
-            src={imageSrc}
-            alt={alt}
-            className={className}
-            style={imgStyle}
-            onClick={onClick}
-            onError={handleError}
-            onLoad={handleLoad}
-            loading={priority ? 'eager' : loading}
-            {...props}
-        />
+      <img
+        src={src}
+        alt={alt}
+        className={`absolute inset-0 w-full h-full ${className}`}
+        style={style}
+        loading="lazy"
+      />
     );
-});
-
-export default AppImage;
+  }
+  return (
+    <img
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      className={className}
+      style={style}
+      loading="lazy"
+    />
+  );
+}
