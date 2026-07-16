@@ -50,7 +50,6 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -90,90 +89,148 @@ export default function TestimonialsSection() {
           </h2>
         </div>
 
-        {/* Horizontal scroll track */}
-        <div
-          ref={trackRef}
-          className="flex gap-5 overflow-x-auto pt-8 pb-4 snap-x snap-mandatory scrollbar-hide"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {testimonials.map((t, i) => (
-            <div
-              key={t.name}
-              className="reveal-hidden relative flex-shrink-0 snap-start bg-white border border-gray-200 rounded-[2rem] p-6 pt-10 flex flex-col gap-4 hover:shadow-lg transition-shadow duration-300"
-              style={{
-                width: '320px',
-                minHeight: '280px',
-                transitionDelay: `${i * 80}ms`,
-              }}
-            >
-              {/* Dark quote icon overlapping the top boundary */}
-              <div className="absolute top-0 left-8 -translate-y-1/2 w-11 h-11 rounded-full bg-black flex items-center justify-center shadow-md">
-                <svg
-                  className="w-5 h-5 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                </svg>
-              </div>
-
-              {/* Avatar + Name + Role */}
-              <div className="flex items-center gap-3">
+        {/* Infinite marquee track wrapper */}
+        <div className="reveal-hidden overflow-hidden py-8 relative w-full">
+          <div className="animate-marquee flex gap-0 w-max">
+            {/* Set 1 */}
+            <div className="flex gap-5 pr-5 flex-shrink-0">
+              {testimonials.map((t) => (
                 <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0 border border-gray-100"
-                  style={{ background: t.color }}
+                  key={t.name}
+                  className="relative flex-shrink-0 bg-white border border-gray-200 rounded-[2rem] p-6 pt-10 flex flex-col gap-4 hover:shadow-lg transition-shadow duration-300"
+                  style={{
+                    width: '320px',
+                    minHeight: '280px',
+                  }}
                 >
-                  {t.initials}
-                </div>
-                <div>
-                  <p className="text-gray-900 font-bold text-xs leading-tight uppercase tracking-wider">
-                    {t.name}
-                  </p>
-                  <p className="text-gray-400 text-[10px] leading-tight mt-0.5">{t.role}</p>
-                </div>
-              </div>
+                  {/* Dark quote icon overlapping the top boundary */}
+                  <div className="absolute top-0 left-8 -translate-y-1/2 w-11 h-11 rounded-full bg-black flex items-center justify-center shadow-md">
+                    <svg
+                      className="w-5 h-5 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                    </svg>
+                  </div>
 
-              {/* Stars */}
-              <div className="flex gap-1">
-                {Array.from({ length: 5 }).map((_, si) => (
-                  <svg
-                    key={si}
-                    className={`w-3.5 h-3.5 ${si < t.stars ? 'text-[#ff7a59]' : 'text-gray-200'}`}
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" />
-                  </svg>
-                ))}
-              </div>
+                  {/* Avatar + Name + Role */}
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0 border border-gray-100"
+                      style={{ background: t.color }}
+                    >
+                      {t.initials}
+                    </div>
+                    <div>
+                      <p className="text-gray-900 font-bold text-xs leading-tight uppercase tracking-wider">
+                        {t.name}
+                      </p>
+                      <p className="text-gray-400 text-[10px] leading-tight mt-0.5">{t.role}</p>
+                    </div>
+                  </div>
 
-              {/* Quote */}
-              <p className="text-gray-500 text-xs leading-relaxed flex-1">{t.quote}</p>
+                  {/* Stars */}
+                  <div className="flex gap-1">
+                    {Array.from({ length: 5 }).map((_, si) => (
+                      <svg
+                        key={si}
+                        className={`w-3.5 h-3.5 ${si < t.stars ? 'text-[#ff7a59]' : 'text-gray-200'}`}
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" />
+                      </svg>
+                    ))}
+                  </div>
+
+                  {/* Quote */}
+                  <p className="text-gray-500 text-xs leading-relaxed flex-1">{t.quote}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        {/* Scroll hint dots */}
-        <div className="flex justify-center gap-2 mt-6">
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => {
-                const track = trackRef.current;
-                if (!track) return;
-                const cardWidth = 320 + 20; // card (320px) + gap (20px)
-                track.scrollTo({ left: i * cardWidth, behavior: 'smooth' });
-              }}
-              className="w-1.5 h-1.5 rounded-full bg-gray-300 hover:bg-gray-500 transition-colors"
-              aria-label={`Go to testimonial ${i + 1}`}
-            />
-          ))}
+            {/* Set 2 */}
+            <div className="flex gap-5 pr-5 flex-shrink-0">
+              {testimonials.map((t) => (
+                <div
+                  key={`${t.name}-clone`}
+                  className="relative flex-shrink-0 bg-white border border-gray-200 rounded-[2rem] p-6 pt-10 flex flex-col gap-4 hover:shadow-lg transition-shadow duration-300"
+                  style={{
+                    width: '320px',
+                    minHeight: '280px',
+                  }}
+                >
+                  {/* Dark quote icon overlapping the top boundary */}
+                  <div className="absolute top-0 left-8 -translate-y-1/2 w-11 h-11 rounded-full bg-black flex items-center justify-center shadow-md">
+                    <svg
+                      className="w-5 h-5 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                    </svg>
+                  </div>
+
+                  {/* Avatar + Name + Role */}
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0 border border-gray-100"
+                      style={{ background: t.color }}
+                    >
+                      {t.initials}
+                    </div>
+                    <div>
+                      <p className="text-gray-900 font-bold text-xs leading-tight uppercase tracking-wider">
+                        {t.name}
+                      </p>
+                      <p className="text-gray-400 text-[10px] leading-tight mt-0.5">{t.role}</p>
+                    </div>
+                  </div>
+
+                  {/* Stars */}
+                  <div className="flex gap-1">
+                    {Array.from({ length: 5 }).map((_, si) => (
+                      <svg
+                        key={si}
+                        className={`w-3.5 h-3.5 ${si < t.stars ? 'text-[#ff7a59]' : 'text-gray-200'}`}
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" />
+                      </svg>
+                    ))}
+                  </div>
+
+                  {/* Quote */}
+                  <p className="text-gray-500 text-xs leading-relaxed flex-1">{t.quote}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Hide scrollbar globally for this section */}
+      {/* Hide scrollbar globally for this section & define marquee animations */}
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
+        
+        @keyframes marquee {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+
+        .animate-marquee {
+          animation: marquee 35s linear infinite;
+        }
+
+        .animate-marquee:hover {
+          animation-play-state: paused;
+        }
       `}</style>
     </section>
   );

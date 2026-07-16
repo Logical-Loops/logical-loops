@@ -8,19 +8,19 @@ const stats = [
     gradient: 'linear-gradient(135deg, #c2410c 30%, #7c2d12 100%)',
   },
   {
-    value: 120,
+    value: 20,
     suffix: '+',
     label: 'Projects Delivered',
     gradient: 'linear-gradient(135deg, #b45309 30%, #78350f 100%)',
   },
   {
-    value: 15,
+    value: 7,
     suffix: '+',
     label: 'Active Businesses',
     gradient: 'linear-gradient(135deg, #15803d 30%, #14532d 100%)',
   },
   {
-    value: 25,
+    value: 15,
     suffix: '+',
     label: 'Enterprise Clients',
     gradient: 'linear-gradient(135deg, #1d4ed8 30%, #1e3a8a 100%)',
@@ -31,7 +31,10 @@ function useCountUp(target: number, duration: number, started: boolean) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (!started) return;
+    if (!started) {
+      setCount(0);
+      return;
+    }
     let startTime: number | null = null;
 
     const step = (timestamp: number) => {
@@ -100,7 +103,14 @@ export default function StatsSection() {
                 el.classList.remove('reveal-hidden');
                 el.classList.add('reveal-visible');
               });
-            observer.unobserve(entry.target);
+          } else {
+            setStarted(false);
+            entry.target
+              .querySelectorAll<HTMLElement>('.reveal-visible')
+              .forEach((el) => {
+                el.classList.remove('reveal-visible');
+                el.classList.add('reveal-hidden');
+              });
           }
         });
       },

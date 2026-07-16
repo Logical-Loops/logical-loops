@@ -1,28 +1,64 @@
-import blackLogoFooterImg from '@/assets/images/black_logo_footer.png';
-import footerBgImage from '@/assets/images/footer_bg_image.png';
+import logoImg from '@/assets/logo.png';
 
 export default function Footer() {
   return (
-    <footer 
-      className="bg-white text-gray-800 relative overflow-hidden"
-      style={{
-        backgroundImage: `url(${footerBgImage})`,
-        backgroundSize: '100% 100%',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
+    <footer className="bg-white text-gray-800 relative overflow-hidden">
       
-      {/* 1. Large Black Lightning Bolt Logo watermark on the right */}
-      {/* Adjusted top position and right percentage to align perfectly with the background horizontal and diagonal grid lines */}
-      <img
-        src={blackLogoFooterImg}
-        alt="Logo watermark"
-        className="absolute right-[17.2%] top-[96px] h-[160px] w-auto object-contain select-none pointer-events-none opacity-100 z-0"
-      />
+      {/* Dynamic Grid Lines */}
+      <div className="absolute inset-0 pointer-events-none z-10">
+        {/* Horizontal Lines */}
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-black/[0.08]" />
+        <div className="absolute top-[80px] left-0 right-0 h-[1px] bg-black/[0.08]" />
+        <div className="absolute top-[160px] left-0 right-0 h-[1px] bg-black/[0.08]" />
+        <div className="absolute top-[240px] left-0 right-0 h-[1px] bg-black/[0.08]" />
+        <div className="absolute top-[320px] left-0 right-0 h-[1px] bg-black/[0.08]" />
+        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-black/[0.08]" />
+
+        {/* Diagonal Lines (Bottom Right) */}
+        <div 
+          className="absolute right-0 top-0 bottom-0 w-[45%] opacity-50"
+          style={{
+            backgroundImage: `
+              repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 90px,
+                rgba(0, 0, 0, 0.08) 90px,
+                rgba(0, 0, 0, 0.08) 91px
+              )
+            `,
+          }}
+        />
+      </div>
 
       {/* 2. Text content containers (z-20 - on top of the background) */}
       <div className="max-w-7xl mx-auto px-6 relative z-20">
+        
+        {/* Brand Logo Card on the Right */}
+        <div className="absolute right-6 top-[80px] bottom-[80px] hidden lg:flex flex-col justify-center items-end group">
+          <div className="flex items-center gap-3 mb-3 group-hover:scale-105 transition-all duration-300">
+            <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center shadow-sm border border-gray-100/50 relative overflow-hidden group/logo">
+              {/* Soft purple/indigo radial glow on hover */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/10 to-purple-500/10 opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300" />
+              <img 
+                src={logoImg} 
+                alt="Logicalloops Logo" 
+                className="w-8 h-8 object-contain relative z-10 transition-transform duration-500 group-hover/logo:rotate-12"
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-extrabold text-2xl text-gray-900 tracking-tight leading-none mb-1">
+                Logicalloops
+              </span>
+              <span className="text-[10px] font-bold text-[#71B206] uppercase tracking-widest leading-none">
+                Digital Agency
+              </span>
+            </div>
+          </div>
+          <p className="text-right text-gray-400 text-[11px] leading-relaxed font-medium max-w-[280px]">
+            We turn complex ideas into seamless digital realities through high-performance web development, mobile apps, and visually impactful designs.
+          </p>
+        </div>
         
         {/* Row 1: Tagline (Aligned to Band 1) */}
         <div className="h-20 flex items-center relative z-20">
@@ -105,7 +141,7 @@ export default function Footer() {
                 <svg className="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                 </svg>
-                Contactlogicalloops.in@gmail.com
+                logicalloops.in@gmail.com
               </a>
             </div>
           </div>
